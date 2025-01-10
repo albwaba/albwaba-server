@@ -12,8 +12,6 @@ const getNotification = async (req, res) => {
       }
       return acc;
     }, []);
-    console.log(NotSeenCount);
-
     if (NotSeenCount.length > 0) {
       const updataNotSeenNotifications = await User.updateMany(
         { "notifications._id": { $in: NotSeenCount } },
