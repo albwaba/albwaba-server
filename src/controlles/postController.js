@@ -59,13 +59,11 @@ const getAllPosts = async (req, res) => {
   const skip = (page - 1) * postsPerPage;
   try {
     const totalPosts = await PostModel.countDocuments({ status: "approved" });
-    const posts = await PostModel.find({})
+    const posts = await PostModel.find({ status: "approved" })
       .sort({ createdAt: sort_type === "asc" ? -1 : 1 })
       .skip(skip)
       .limit(postsPerPage);
-
     const totalPages = Math.ceil(totalPosts / postsPerPage);
-
     res.status(200).json({ posts, totalPages, totalPosts });
   } catch (error) {
     console.log(error);
@@ -86,7 +84,6 @@ const getPost = async (req, res) => {
     if (post) {
       return res.status(200).json(post);
     }
-
     res.status(204).json({});
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -98,7 +95,6 @@ const getFilterPosts = async (req, res) => {
   const postsPerPage = 10;
   const skip = (page - 1) * postsPerPage;
   const query = req.query;
-  // console.log(page);
 
   const filter = {
     postName: new RegExp(query.q || "", "i"),

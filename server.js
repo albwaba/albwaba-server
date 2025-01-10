@@ -6,12 +6,6 @@ const port = process.env.PORT || 2000;
 import dotenv from "dotenv";
 import { Webhook } from "svix";
 import mongoose from "mongoose";
-
-import {
-  ClerkExpressRequireAuth,
-  ClerkExpressWithAuth,
-  createClerkClient,
-} from "@clerk/clerk-sdk-node";
 import { postRouter } from "./src/routes/postRoutes.js";
 import { adminRouter } from "./src/routes/adminRoutes.js";
 import { userRoute } from "./src/routes/userRoutes.js";
@@ -22,7 +16,6 @@ const app = express();
 app.use(express.json({ limit: "50mb" }));
 const crosOption = {
   origin: "*",
-  credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
 app.use(cors(crosOption)); // Use the lax middleware that returns an empty auth object when unauthenticated
@@ -36,14 +29,10 @@ app.use((err, req, res, next) => {
   res.status(401).send("Unauthenticated!");
 });
 
-console.log(process.env.WEBHOOK_SECRET);
-
 app.post(
   "/api/webhooks",
   bodyParser.raw({ type: "application/json" }),
   async function (req, res) {
-    console.log("hiiii");
-
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
     try {
       const payload = req.body;
@@ -80,8 +69,8 @@ app.post(
 
       const eventType = evt.type;
       // console.log(evt.data);
-      console.log(attributes);
-      console.log(eventType);
+      // console.log(attributes);
+      // console.log(eventType);
 
       if (eventType === "user.created") {
         console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
@@ -116,8 +105,6 @@ app.post(
         const { first_name, image_url, last_name, email_addresses } =
           attributes;
         try {
-          console.log(image_url);
-
           const user = await User.updateOne(
             { clerk_Id: id },
             {
@@ -151,3 +138,4 @@ mongoose.connect("mongodb://127.0.0.1:27017").then(() => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
 });
+console.log("s");
