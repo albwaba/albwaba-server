@@ -133,9 +133,13 @@ app.post(
   }
 );
 
-mongoose.connect("mongodb://127.0.0.1:27017").then(() => {
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+mongoose
+  .connect(
+    "mongodb+srv://albwaba2025:<db_password>@albwaba.pjgxy.mongodb.net/?retryWrites=true&w=majority&appName=albwaba"
+  )
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Example app listening at http://localhost:${port}`);
+    });
   });
-});
 console.log("s");
