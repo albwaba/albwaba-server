@@ -135,7 +135,7 @@ app.post(
 
 mongoose
   .connect(
-    "mongodb+srv://albwaba2025:<db_password>@albwaba.pjgxy.mongodb.net/?retryWrites=true&w=majority&appName=albwaba"
+    "mongodb+srv://albwaba2025:albwaba2025@albwaba.pjgxy.mongodb.net/?retryWrites=true&w=majority&appName=albwaba"
   )
   .then(() => {
     app.listen(port, () => {
