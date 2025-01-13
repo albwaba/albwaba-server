@@ -11,7 +11,7 @@ import {
 
 const adminRouter = express.Router();
 
-adminRouter.get("/posts", ClerkExpressRequireAuth(), getPendingPosts);
+adminRouter.get("/posts", ClerkExpressWithAuth(), getPendingPosts);
 adminRouter.patch(
   "/posts/reject/:postId",
   ClerkExpressRequireAuth(),
