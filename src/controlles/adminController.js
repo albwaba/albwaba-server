@@ -2,17 +2,15 @@ import { PostModel } from "../models/Posts.js";
 import { User } from "../models/Users.js";
 
 export const getPendingPosts = async (req, res) => {
-  console.log(req.auth);
-
-  if (!req.auth || req.auth?.claims?.metadata?.role !== "admin") {
-    return res.status(401).json({ error: "Unauthenticated" });
+  if (req.auth?.claims?.metadata?.role === "admin") {
+    try {
+      const posts = await PostModel.find({ status: "pending" });
+      return res.status(200).json(posts);
+    } catch (error) {
+      return res.status(401).json(error);
+    }
   }
-  try {
-    const posts = await PostModel.find({ status: "pending" });
-    res.status(200).json(posts);
-  } catch (error) {
-    res.status(401).json(error);
-  }
+  return res.status(401).json({ error: "Unauthenticated" });
 };
 
 export const rejectPost = async (req, res) => {
